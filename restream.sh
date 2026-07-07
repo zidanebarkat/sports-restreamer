@@ -1,9 +1,11 @@
 #!/bin/bash
-M3U8_URL="${M3U8_URL:-https://andro.226503.xyz/checklist/androstreamlivebsm1.m3u8}"
+unset M3U8_URL
+M3U8_URL="https://andro.226503.xyz/checklist/androstreamlivebsm1.m3u8"
 OUTPUT_URL="${OUTPUT_URL:-rtmps://a.rtmp.youtube.com:443/live2/ru33-pe6q-z9gr-a2es-5t82}"
 
 echo "[sports] Starting..."
 echo "[sports] M3U8_URL=$M3U8_URL"
+echo "[sports] ENV M3U8_URL was: ${M3U8_URL_was_unset:-unset}"
 
 [ -z "$OUTPUT_URL" ] && { echo "Missing OUTPUT_URL"; exit 1; }
 
