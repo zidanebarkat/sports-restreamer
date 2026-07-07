@@ -1,5 +1,6 @@
 #!/bin/bash
-M3U8_URL="${M3U8_URL:-http://d0cf70eb.rostelekom.xyz/iptv/PMRVKVATL4XX98/19062/index.m3u8}"
+M3U8_URL="http://d0cf70eb.rostelekom.xyz/iptv/PMRVKVATL4XX98/19062/index.m3u8"
+[ -n "$M3U8_URL_OVERRIDE" ] && M3U8_URL="$M3U8_URL_OVERRIDE"
 OUTPUT_URL="${OUTPUT_URL:-rtmps://a.rtmp.youtube.com:443/live2/ru33-pe6q-z9gr-a2es-5t82}"
 
 echo "[sports] Starting..."
