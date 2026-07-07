@@ -9,6 +9,10 @@ echo "[sports] ENV M3U8_URL was: ${M3U8_URL_was_unset:-unset}"
 
 [ -z "$OUTPUT_URL" ] && { echo "Missing OUTPUT_URL"; exit 1; }
 
+# Delay startup to let any old YouTube ingestion connection die during deploy
+echo "[sports] Waiting 10s for old connections to close..."
+sleep 10
+
 while true; do
     echo "[sports] Starting ffmpeg..."
     ffmpeg -nostdin -re \
