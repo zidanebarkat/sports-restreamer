@@ -1,49 +1,31 @@
 #!/bin/bash
-SPORTS_URL="${SPORTS_URL:-https://hello.1yallashoot.com/splayer/Live1.php}"
+M3U8_URL="${M3U8_URL:-https://2.simokora.com/my-hls/h9asfma10d5.m3u8}"
 OUTPUT_URL="${OUTPUT_URL:-}"
 
 echo "[sports] Starting..."
-echo "[sports] SPORTS_URL=$SPORTS_URL"
+echo "[sports] M3U8_URL=$M3U8_URL"
 
 [ -z "$OUTPUT_URL" ] && { echo "Missing OUTPUT_URL"; exit 1; }
 
-extract_m3u8() {
-    local embed_urls
-    embed_urls=$(curl -sL "$SPORTS_URL" 2>/dev/null | grep -oP 'https://player\.simokora\.com/embed\.php\?stream=[^"'"'"'&]+' | sort -u)
-    [ -z "$embed_urls" ] && return 1
-    while IFS= read -r embed; do
-        [ -z "$embed" ] && continue
-        local m3u8
-        m3u8=$(curl -sL -H "Referer: $SPORTS_URL" -H "User-Agent: Mozilla/5.0" "$embed" 2>/dev/null | grep -oP 'https?://[^"'"'"'<>]+\.m3u8[^"'"'"'<>]*' | head -1)
-        if [ -n "$m3u8" ]; then
-            echo "$m3u8"
-            return 0
-        fi
-    done <<< "$embed_urls"
-    return 1
-}
-
 while true; do
-    echo "[sports] Extracting m3u8 URL..."
-    m3u8_url=$(extract_m3u8)
-    if [ -z "$m3u8_url" ]; then
-        echo "[sports] Failed to extract m3u8, retrying in 10s..."
-        sleep 10
-        continue
-    fi
-    echo "[sports] Got m3u8: ${m3u8_url:0:80}..."
-
     echo "[sports] Starting ffmpeg..."
-    ffmpeg -nostdin -re -timeout 15000000 -analyzeduration 10M -probesize 10M \
-        -headers "Referer: https://player.simokora.com/\r\nUser-Agent: Mozilla/5.0\r\n" \
+
+    ffmpeg -nostdin -re \
+        -headers "Referer: https://zidanebarkat.github.io/sport24wire-player/\r\nUser-Agent: Mozilla/5.0\r\n" \
         -protocol_whitelist "file,http,https,tcp,tls,crypto" \
         -fflags +discardcorrupt \
-        -max_reload 999 \
-        -i "$m3u8_url" \
-        -c copy \
+        -timeout 30000000 \
+        -i "$M3U8_URL" \
+        -filter_complex "[0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2[vid]; \
+                         color=c=black:s=1280x720:r=30,format=rgba[c]; \
+                         [c]drawtext=text='FOOT WC 26':fontsize=64:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2[overlay]; \
+                         [vid][overlay]overlay=shortest=1:enable='between(mod(t,300),0,15)'" \
+        -c:v libx264 -preset ultrafast -b:v 1500k -maxrate 2000k -bufsize 3000k -r 10 -g 30 \
+        -c:a aac -b:a 128k \
+        -rtmp_live live \
         -f flv "$OUTPUT_URL" \
         -loglevel warning -stats 2>&1 </dev/null
 
-    echo "[sports] Stream ended, re-extracting..."
-    sleep 2
+    echo "[sports] Stream ended, restarting in 5s..."
+    sleep 5
 done
