@@ -1,6 +1,6 @@
 #!/bin/bash
 M3U8_URL="${M3U8_URL:-https://2.simokora.com/my-hls/h9asfma10d5.m3u8}"
-OUTPUT_URL="${OUTPUT_URL:-}"
+OUTPUT_URL="${OUTPUT_URL:-rtmps://a.rtmp.youtube.com:443/live2/ru33-pe6q-z9gr-a2es-5t82}"
 
 echo "[sports] Starting..."
 echo "[sports] M3U8_URL=$M3U8_URL"
