@@ -11,9 +11,12 @@ while true; do
     echo "[sports] Starting ffmpeg..."
 
     ffmpeg -nostdin -re \
-        -headers "Referer: https://zidanebarkat.github.io/sport24wire-player/\r\nUser-Agent: Mozilla/5.0\r\n" \
+        -user_agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+        -referer "https://zidanebarkat.github.io/sport24wire-player/" \
+        -headers "Origin: https://zidanebarkat.github.io\r\n" \
         -protocol_whitelist "file,http,https,tcp,tls,crypto" \
         -fflags +discardcorrupt \
+        -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 60 \
         -timeout 30000000 \
         -i "$M3U8_URL" \
         -filter_complex "[0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2[vid]; \
