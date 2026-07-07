@@ -1,6 +1,5 @@
 #!/bin/bash
-M3U8_URL="http://d0cf70eb.rostelekom.xyz/iptv/PMRVKVATL4XX98/19062/index.m3u8"
-[ -n "$M3U8_URL_OVERRIDE" ] && M3U8_URL="$M3U8_URL_OVERRIDE"
+M3U8_URL="${M3U8_URL:-https://andro.226503.xyz/checklist/androstreamlivebsm1.m3u8}"
 OUTPUT_URL="${OUTPUT_URL:-rtmps://a.rtmp.youtube.com:443/live2/ru33-pe6q-z9gr-a2es-5t82}"
 
 echo "[sports] Starting..."
@@ -12,7 +11,7 @@ while true; do
     echo "[sports] Starting ffmpeg..."
     ffmpeg -nostdin -re \
         -user_agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-        -referer "https://hello.1yallashoot.com/" \
+        -referer "https://trgoals1537.xyz/" \
         -protocol_whitelist "file,http,https,tcp,tls,crypto" \
         -fflags +discardcorrupt \
         -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 60 \
