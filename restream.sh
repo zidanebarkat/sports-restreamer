@@ -18,7 +18,7 @@ while true; do
         -i "$M3U8_URL" \
         -filter_complex "[0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2[vid]; \
                          color=c=black:s=1280x720:r=30,format=rgba[c]; \
-                         [c]drawtext=text='FOOT WC 26':fontsize=64:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2[overlay]; \
+                         [c]drawtext=text='FOOT WC 26':fontsize=64:fontcolor=white:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:x=(w-text_w)/2:y=(h-text_h)/2[overlay]; \
                          [vid][overlay]overlay=shortest=1:enable='between(mod(t,300),0,15)'" \
         -c:v libx264 -preset ultrafast -b:v 1500k -maxrate 2000k -bufsize 3000k -r 10 -g 30 \
         -c:a aac -b:a 128k \
